@@ -18,10 +18,16 @@ const MatrixElementInputTextField = styled(TextField)({
     border:'0'
 });
 
-const Matrix = ({matrix, updateMatrix, name, visualise, operation, showSolution}:any) => {
+const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, modifyMatrix}:any) => {
+    // console.log(mat)
+    const matrix = mat.matrix;
+    const rows = mat.size[0];
+    const columns = mat.size[1];
+
+   
     return(
     <div style={{padding:"1em"}}>
-        <MatrixDimensions name={name} rows={matrix.length} columns = {matrix[0].length}/>
+        <MatrixDimensions name={name} rows={matrix.length} columns = {matrix[0].length} modifyMatrix ={modifyMatrix}/>
         <table className='matrix'>
           <tbody>
             {matrix.map((x:any,i:any)=>
@@ -49,7 +55,7 @@ const Matrix = ({matrix, updateMatrix, name, visualise, operation, showSolution}
                         size="small" 
                         key={`${i}${j}`}
                         disabled={name==="answer"}
-                        onChange={(e)=>{updateMatrix(e.target.value, i,j, name)}}
+                        onChange={(e)=>{updateMatrixrix(e.target.value, i,j, name)}}
                         onClick={name==="answer"?()=>showSolution(i,j) :undefined}
                         data-i={i} data-j={j}
                         
