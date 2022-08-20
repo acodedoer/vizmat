@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react"
 import Matrix from "./components/Matrix";
+import ErrorMessage from "./components/ErrorMessage";
 import Paper from '@mui/material/Paper';
 import SelectOperation from "./components/SelectOperation";
 import TextField from '@mui/material/TextField';
@@ -23,7 +24,6 @@ function App() {
                     <p>C<sub>ij</sub> = A<sub>ij</sub> - B<sub>ij</sub></p>,
                     <p>C<sub>ij</sub> = A<sub>ij</sub> * B<sub>ij</sub></p>
                   ]
-
   
   const modifyMatrix = (name:string, rows:number, columns:number) => {
 
@@ -37,7 +37,7 @@ function App() {
     while(matrix[0].length>columns){
       matrix.map((row)=>row.pop());
     }
-    
+
     if(rows>matrix.length){
       const row = [];
       for(let i = 0; i<matrix[0].length; i++){row.push(0)}
@@ -73,10 +73,13 @@ function App() {
 
   console.log(state)
   const updateMatrix = (value, i , j, name) => {
-    let matrix = [...state[name]];
+    let matrix = [...state[name].matrix];
     matrix[i][j] = parseInt(value) || matrix[i][j];
     
-    setState({m1:name=="m1"?matrix:state.m1, m2:name=="m2"?matrix:state.m2, answer: {matrix:performOperation(), size:[4,4]}, solution:state.solution, operation:state.operation});
+    if(name === "m1")setState({...state, m1:{matrix,size:[matrix.length,matrix[0].length]}});
+    else if (name === "m2")setState({...state, m2:{matrix,size:[matrix.length,matrix[0].length]}});
+
+    // setState({m1:name=="m1"?{matrix:performOperation(), size:[4,4]}, m2:name=="m2"?matrix:state.m2.matrix, answer: {matrix:performOperation(), size:[4,4]}, solution:state.solution, operation:state.operation});
   }
 
   const swapMatrices = () => {
@@ -93,8 +96,25 @@ function App() {
     updateAnswer();
   }, [state.operation, state.m1, state.m2]);
 
+  const isOperationValid = () => {
+    if (state.operation === 1 || state.operation === 2){
+      if(state.m1.size[0] === state.m2.size[0] && state.m1.size[1] === state.m2.size[1]) return true;
+      else return false;
+    }
+
+    if (state.operation === 3){
+      if(state.m1.size[1] === state.m2.size[0]) return true;
+      else return false;
+    }
+
+    return false
+  }
+
   const updateAnswer = () =>{
-    setState({m1:state.m1, m2:state.m2, answer: {matrix:performOperation(), size:[4,4]}, solution:state.solution, operation:state.operation});
+    if(isOperationValid()){
+      setState({m1:state.m1, m2:state.m2, answer: {matrix:performOperation(), size:[4,4]}, solution:state.solution, operation:state.operation});
+    }
+    else console.log("Operation cannot be perfomed")
   }
 
   const showSolution = (m, n) =>{
@@ -118,6 +138,7 @@ function App() {
   }
 
   const performOperation = () => {
+    if(isOperationValid()){
     switch (state.operation) {
       case 1:
         return addMatrices(state.m1.matrix,state.m2.matrix)
@@ -127,8 +148,9 @@ function App() {
         return multplyMatrices(state.m1.matrix,state.m2.matrix)
       default:
         throw new Error ('Inavlid operaion selected!');
-        break;
     }
+  }
+  else return state.answer.matrix
   }
 
   const addMatrices = (m1:any,m2:any) => {
