@@ -25,32 +25,37 @@ function App() {
                   ]
 
   
-  const modifyMatrix = (name:String, rows:number, columns:number) => {
+  const modifyMatrix = (name:string, rows:number, columns:number) => {
 
-    console.log(name)
-    console.log(rows)
-    console.log(columns)
-    // if(matrix.length===rows &&matrix[0].length===columns) return matrix
+    if(rows>6 || columns>6 || rows<1 || columns<1) return;
+    const matrix:number[][] = [...state[name].matrix]
 
-    // if(rows>matrix.length){
-    //   const row = [];
-    //   for(let i = 0; i<matrix[0].length; i++){row.push(0)}
-    //   matrix.push(row);
-    // }
+    while(matrix.length>rows){
+      matrix.pop();
+    }
 
-    // if(columns>matrix[0].length){
-    //   const count:number = columns - matrix[0].length;
-    //   const extra: number[] = [];
-    //   for(let i = 0; i<count; i++){extra.push(0)}
+    while(matrix[0].length>columns){
+      matrix.map((row)=>row.pop());
+    }
+    
+    if(rows>matrix.length){
+      const row = [];
+      for(let i = 0; i<matrix[0].length; i++){row.push(0)}
+      matrix.push(row);
+    }
 
-    //   matrix.forEach((row,i) => {
-    //     row=[...row,...extra]
-    //     matrix[i] = row;
-    //   })
-    // }
+    if(columns>matrix[0].length){
+      const count:number = columns - matrix[0].length;
+      const extra: number[] = [];
+      for(let i = 0; i<count; i++){extra.push(0)}
 
-    // return matrix;
-
+      matrix.forEach((row,i) => {
+        row=[...row,...extra]
+        matrix[i] = row;
+      })
+    }
+    if(name === "m1")setState({...state, m1:{matrix,size:[rows,columns]}});
+    else if (name === "m2")setState({...state, m2:{matrix,size:[rows,columns]}});
   }
   const initialState = {
     m1:{matrix:[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], size:[4,4]}, 
