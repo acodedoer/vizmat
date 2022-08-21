@@ -1,11 +1,8 @@
 import {useState, useEffect} from "react"
+import { matrixAddition, matrixSubtraction,matrixMultiplication} from "./utils";
 import Matrix from "./components/Matrix";
 import ErrorMessage from "./components/ErrorMessage";
-import Paper from '@mui/material/Paper';
-import SelectOperation from "./components/SelectOperation";
-import TextField from '@mui/material/TextField';
 import { MatrixArithmeticArea } from "./components/MatrixArithmetic";
-import ArithmeticArea from "./components/ArithmeticArea";
 import "./App.css";
 import { Container } from "@mui/system";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
@@ -16,34 +13,68 @@ import ArithmeticSign from "./components/ArithmeticSign";
 import ResetIcon from "@mui/icons-material/SettingsBackupRestore"
 import SwapIcon from "@mui/icons-material/SwapHoriz"
 import Divider from '@mui/material/Divider';
-import { ConstructionOutlined } from "@mui/icons-material";
 
 function App() {
   const formulas = [
                     <p>C<sub>ij</sub> = A<sub>ij</sub> + B<sub>ij</sub></p>, 
                     <p>C<sub>ij</sub> = A<sub>ij</sub> - B<sub>ij</sub></p>,
                     <p>C<sub>ij</sub> = A<sub>ij</sub> * B<sub>ij</sub></p>
-                  ]
-  
-  const modifyMatrix = (name:string, rows:number, columns:number) => {
+  ]
+                  
+  const initialState = {
+    m1:{matrix:[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], size:[4,4]}, 
+    m2:{matrix:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]], size:[4,4]}, 
+    answer:{matrix:[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], size:[4,4]}, 
+    solution:"", 
+    operation:1,
+  }
 
+  //update the state if any matrix, operation, or answer is upated
+  const updateState = (property:string, value:any) => {
+      switch (property) {
+        case "m1":
+          setState({...state, m1:value});
+          break
+        case "m2":
+          setState({...state, m2:value});
+          break
+        case "answer":
+          setState({...state, answer:value});
+          break
+        case "solution":
+          setState({...state, solution:value});
+          break
+        case "operation":
+          setState({...state, operation:value});
+          break
+      }
+  }
+
+  //handle changes in the size of a matrix
+  const modifyMatrix = (name:string, rows:number, columns:number) => {
     if(rows>6 || columns>6 || rows<1 || columns<1) return;
+    
+    //copy old matrix to modify from state
     const matrix:number[][] = [...state[name].matrix]
 
+    //remove rows
     while(matrix.length>rows){
       matrix.pop();
     }
 
+    //remove columns (for each row)
     while(matrix[0].length>columns){
       matrix.map((row)=>row.pop());
     }
 
+    //add 0 rows
     if(rows>matrix.length){
       const row = [];
       for(let i = 0; i<matrix[0].length; i++){row.push(0)}
       matrix.push(row);
     }
 
+    //add 0 columns for each row
     if(columns>matrix[0].length){
       const count:number = columns - matrix[0].length;
       const extra: number[] = [];
@@ -54,48 +85,36 @@ function App() {
         matrix[i] = row;
       })
     }
-    if(name === "m1")setState({...state, m1:{matrix,size:[rows,columns]}});
-    else if (name === "m2")setState({...state, m2:{matrix,size:[rows,columns]}});
-  }
-  const initialState = {
-    m1:{matrix:[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], size:[4,4]}, 
-    m2:{matrix:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]], size:[4,4]}, 
-    answer:{matrix:[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], size:[4,4]}, 
-    solution:"", 
-    operation:1,
-
+    
+    updateState(name, {matrix,size:[matrix.length, matrix[0].length]});
   }
 
   const initialVisualStates = {selectedCell:{question:{i:null,j:null}, answer:{i:null,j:null}}}
 
   const [visualState, setVisualState] = useState(initialVisualStates);
   const [state, setState] = useState(initialState);
+  const [showError, setShowError] = useState(false);
 
-  console.log(state)
-  const updateMatrix = (value, i , j, name) => {
+  //handle changes in the elements of a matrix
+  const updateMatrix = (value:string, i:number, j:number, name:string) => {
     let matrix = [...state[name].matrix];
-    matrix[i][j] = parseInt(value) || matrix[i][j];
-    
-    if(name === "m1")setState({...state, m1:{matrix,size:[matrix.length,matrix[0].length]}});
-    else if (name === "m2")setState({...state, m2:{matrix,size:[matrix.length,matrix[0].length]}});
-
-    // setState({m1:name=="m1"?{matrix:performOperation(), size:[4,4]}, m2:name=="m2"?matrix:state.m2.matrix, answer: {matrix:performOperation(), size:[4,4]}, solution:state.solution, operation:state.operation});
+    matrix[i][j] = parseInt(value)===0?0:(parseInt(value)|| matrix[i][j]);
+    updateState(name,{matrix,size:[matrix.length,matrix[0].length]})
   }
 
+  //swap matrices A and B
   const swapMatrices = () => {
-    const m1_ = [...state.m2];
-    const m2_ = [...state.m1];
+    const m1_ = state.m2;
+    const m2_ = state.m1;
+    console.log("here")
     setState({...state,m1:m1_,m2:m2_})
-  }
-
-  const setOperation = (op) => {
-    setState({m1:state.m1, m2:state.m2, answer: state.answer, solution:state.solution, operation:op});
   }
 
   useEffect(() => {
     updateAnswer();
   }, [state.operation, state.m1, state.m2]);
 
+  //check if operation is valid given the current size of matrices A and B
   const isOperationValid = () => {
     if (state.operation === 1 || state.operation === 2){
       if(state.m1.size[0] === state.m2.size[0] && state.m1.size[1] === state.m2.size[1]) return true;
@@ -110,14 +129,18 @@ function App() {
     return false
   }
 
+  //perform the chosen opetation if possible and update the answer matrix
   const updateAnswer = () =>{
     if(isOperationValid()){
-      setState({m1:state.m1, m2:state.m2, answer: {matrix:performOperation(), size:[4,4]}, solution:state.solution, operation:state.operation});
+      setShowError(false);
+      const matrix:number[][] = performOperation();
+      updateState("answer",{matrix,size:[matrix.length, matrix[0].length]})
     }
-    else console.log("Operation cannot be perfomed")
+    else setShowError(true);
   }
 
-  const showSolution = (m, n) =>{
+  //highligh appropriat elements in A and B if an element in C is clicked
+  const showSolution = (m:number, n:number) =>{
     setVisualState({selectedCell:{question:{i:m,j:n}, answer:{i:m,j:n}}});
     let solution = "";
     if(state.operation == 1){
@@ -134,18 +157,18 @@ function App() {
       }
     }
     
-    setState({m1:state.m1, m2:state.m2, answer: state.answer, solution:solution,operation: state.operation});
+    updateState("solution", solution);
   }
 
   const performOperation = () => {
     if(isOperationValid()){
     switch (state.operation) {
       case 1:
-        return addMatrices(state.m1.matrix,state.m2.matrix)
+        return matrixAddition(state.m1.matrix,state.m2.matrix)
       case 2:
-        return subtractMatrix(state.m1.matrix,state.m2.matrix)
+        return matrixSubtraction(state.m1.matrix,state.m2.matrix)
       case 3:
-        return multplyMatrices(state.m1.matrix,state.m2.matrix)
+        return matrixMultiplication(state.m1.matrix,state.m2.matrix)
       default:
         throw new Error ('Inavlid operaion selected!');
     }
@@ -153,45 +176,9 @@ function App() {
   else return state.answer.matrix
   }
 
-  const addMatrices = (m1:any,m2:any) => {
-    const matrix = [];
-    for(let i =0; i<m1.length; i++){
-      let row = [];
-      for(let j = 0; j<m1[0].length; j++){
-        row.push(m1[i][j] + m2[i][j]);
-      }
-      matrix.push(row);
-    }
-    return matrix;
-  }
 
-  const subtractMatrix = (m1:any,m2:any) => {
-    const matrix = [];
-    for(let i =0; i<m1.length; i++){
-      let row = [];
-      for(let j = 0; j<m1[0].length; j++){
-        row.push(m1[i][j] - m2[i][j]);
-      }
-      matrix.push(row);
-    }
-    return matrix;
-  }
 
-  const multplyMatrices = (m1, m2) =>{
-    const matrix = []
-    for(let i = 0; i<m1.length; i++){
-      let row = [];
-      for (let j = 0; j<m2[0].length; j++){
-        let cell = 0;
-        m1[i].forEach((num,index) => {
-          cell+=num *m2[index][j];
-        });
-        row.push(cell);
-      }
-      matrix.push(row);
-    }
-    return matrix;
-  }
+
 
 
   return (
@@ -217,7 +204,7 @@ function App() {
           <BottomNavigation
             value={state.operation-1}
             onChange={(event, newValue) => {
-              setOperation(newValue)
+              updateState("operation",newValue+1)
             }}
             sx={{
               backgroundColor:"#f5f5f5",
@@ -225,9 +212,9 @@ function App() {
             }}
             showLabels
           >
-            <BottomNavigationAction label="Add" icon={<AddIcon/>} onClick={()=> setOperation(1)}/>
-            <BottomNavigationAction label="Subtract" icon={<SubtractIcon/>} onClick={()=> setOperation(2)} />
-            <BottomNavigationAction label="Multiply" icon={<MultiplyIcon/>} onClick={()=> setOperation(3)}/>
+            <BottomNavigationAction label="Add" icon={<AddIcon/>}/>
+            <BottomNavigationAction label="Subtract" icon={<SubtractIcon/>}/>
+            <BottomNavigationAction label="Multiply" icon={<MultiplyIcon/>}/>
             <Divider orientation="vertical" flexItem />
             <BottomNavigationAction label="Reset" icon={<ResetIcon/>} onClick={()=>setState(initialState)} />
             <BottomNavigationAction label="Swap" icon={<SwapIcon />} onClick={swapMatrices} />
@@ -236,14 +223,15 @@ function App() {
         </Box>
         <ArithmeticSign sign={0} style={{position:"relative", bottom:"44px"}}/>
         <Box>
-        <Matrix mat={state.answer} visualise={visualState.selectedCell}  name={"answer"} operation={state.operation} showSolution={showSolution} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
+        {showError?<ErrorMessage/>:
+        <><Matrix mat={state.answer} visualise={visualState.selectedCell}  name={"answer"} operation={state.operation} showSolution={showSolution} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
  
         <BottomNavigation style={{backgroundColor:"gray", margin:"16px", height:state.solution===""?undefined:"150px"}}>
           <div style={{textAlign:"center"}}>
-            <p>{formulas[state.operation - 1]}</p>
-            <p>{state.solution}</p>
+            <span>{formulas[state.operation - 1]}</span>
+            <span>{state.solution}</span>
           </div>
-        </BottomNavigation>
+        </BottomNavigation></>}
       </Box>
       </MatrixArithmeticArea>
     </Container>

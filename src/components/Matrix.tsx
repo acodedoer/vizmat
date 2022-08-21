@@ -56,8 +56,7 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
                         data-i={i} data-j={j}
                         
                     /></td>
-                    
-                    // <td  onClick ={()=>showSolution(i,j)} data-i={i} data-j={j} style={{width:"40px",textAlign:"center", cursor:"pointer",padding:"5px", backgroundColor:visualise.answer.i == i && visualise.answer.j == j?"red":""}} key={`${i}${j}`}> {y} </td>           
+                         
                     )}
                 </tr>
             )}
