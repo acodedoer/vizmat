@@ -220,55 +220,73 @@ function App() {
     <Container 
       sx={{
         display:"flex",
+        flexDirection:"column",
         alignItems:"center", 
         justifyContent:"center", 
-        backgroundColor:"red", 
         width:"100vw", 
-        height:"100vh"
-        }}
-      >
+        height:"100vh",
+      }}
+    >
+      <Box sx={{
+        minHeight:"450px",
+        backgroundColor:"#e7ebf0",
+        minWidth:"1257px",
+        display:"flex",
+        flexDirection:"row",
+        justifyContent:"center",
+        alignItems:"flex-start",
+        padding:"0 1em 0 1em"
+      }}>
+      <Box sx={{
+        display:"flex",
+        flexDirection:"row",
+        justifyContent:"center",
+        alignItems:"flex-start",
+        minHeight:"450px",
+        backgroundColor:"#e7ebf0",
+      }}>
+        <Matrix mat={state.m1} name={"m1"} operation={state.operation} visualise={visualState.selectedCell} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
+        
+        <ArithmeticSign sign={state.operation}/>
+        
+        <Matrix mat={state.m2} name={"m2"} operation={state.operation} visualise={visualState.selectedCell} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
 
-      <MatrixArithmeticArea>
-        <Box >
-          <Box sx ={{
-            display:"flex", flexDirection:"row",  justifyContent:"stretch", backgroundColor:"white", alignItems:"flex-start"  }}>
-            <Matrix mat={state.m1} name={"m1"} operation={state.operation} visualise={visualState.selectedCell} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
-            <ArithmeticSign sign={state.operation}/>
-            <Matrix mat={state.m2} name={"m2"} operation={state.operation} visualise={visualState.selectedCell} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
-          </Box>
-          <BottomNavigation
-            value={state.operation-1}
-            onChange={(event, newValue) => {
-              updateState("operation",newValue+1)
-            }}
-            sx={{
-              backgroundColor:"#f5f5f5",
-              margin:"16px"
-            }}
-            showLabels
-          >
-            <BottomNavigationAction label="Add" icon={<AddIcon/>}/>
-            <BottomNavigationAction label="Subtract" icon={<SubtractIcon/>}/>
-            <BottomNavigationAction label="Multiply" icon={<MultiplyIcon/>}/>
-            <Divider orientation="vertical" flexItem />
-            <BottomNavigationAction label="Reset" icon={<ResetIcon/>} onClick={()=>setState(initialState)} />
-            <BottomNavigationAction label="Swap" icon={<SwapIcon />} onClick={swapMatrices} />
-            
-          </BottomNavigation>
-        </Box>
-        <ArithmeticSign sign={0} style={{position:"relative", bottom:"44px"}}/>
-        <Box >
-        {showError?<ErrorMessage/>:
-        <><Matrix mat={state.answer} visualise={visualState.selectedCell}  name={"answer"} operation={state.operation} showSolution={showSolution} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
- 
-        <BottomNavigation style={{backgroundColor:"gray", margin:"16px", height:state.solution===""?undefined:"150px"}}>
-          <div style={{textAlign:"center"}}>
-            <span>{formulas[state.operation - 1]}</span>
-            <span>{state.solution}</span>
-          </div>
-        </BottomNavigation></>}
+        <ArithmeticSign sign={0}/>
+
+        {showError?
+          <ErrorMessage/>
+          :
+          <Matrix mat={state.answer} visualise={visualState.selectedCell}  name={"answer"} operation={state.operation} showSolution={showSolution} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
+        }
       </Box>
-      </MatrixArithmeticArea>
+      </Box>
+      <Box>
+        <BottomNavigation style={{backgroundColor:"gray", margin:"16px", height:"93px"}}>
+          <div style={{textAlign:"center"}}>
+            <p>{formulas[state.operation - 1]}</p>
+            <p>{state.solution===""?"Click on any element in Matrix C":state.solution}</p>
+          </div>
+        </BottomNavigation>
+        <BottomNavigation
+          value={state.operation-1}
+          onChange={(event, newValue) => {
+            updateState("operation",newValue+1)
+          }}
+          sx={{
+            backgroundColor:"#f5f5f5",
+            margin:"16px"
+          }}
+          showLabels
+        >
+          <BottomNavigationAction label="Add" icon={<AddIcon/>}/>
+          <BottomNavigationAction label="Subtract" icon={<SubtractIcon/>}/>
+          <BottomNavigationAction label="Multiply" icon={<MultiplyIcon/>}/>
+          <Divider orientation="vertical" flexItem />
+          <BottomNavigationAction label="Reset" icon={<ResetIcon/>} onClick={()=>setState(initialState)} />
+          <BottomNavigationAction label="Swap" icon={<SwapIcon />} onClick={swapMatrices} />
+        </BottomNavigation>
+      </Box>
+
     </Container>
   );
 }
