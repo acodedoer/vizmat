@@ -6,7 +6,8 @@ import MatrixDimensions from './MatrixDimension';
 const MatrixElementInputTextField = styled(TextField)({
     '& .Mui-disabled': {
         fontWeight:600, 
-        color:"#0000ff"
+        color:"#0000ff",
+        cursor:"pointer"
     },
     '& .MuiOutlinedInput-input': {
         padding: '9px',
@@ -33,7 +34,6 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
                     <MatrixElementInputTextField  
                         style={{
                             border:0,
-                            cursor:name==="answer"?"pointer":"auto",
                             backgroundColor: operation==3?
                                                 name=="m1"?
                                                     (i==visualise.question.i? 

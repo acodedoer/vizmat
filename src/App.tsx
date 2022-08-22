@@ -261,7 +261,7 @@ function App() {
       </Box>
       </Box>
       <Box>
-        <BottomNavigation style={{backgroundColor:"gray", margin:"16px", height:"93px"}}>
+        <BottomNavigation style={{backgroundColor:"gray", margin:"16px", height:"93px", width:720}}>
           <div style={{textAlign:"center"}}>
             <p>{formulas[state.operation - 1]}</p>
             <p>{state.solution===""?"Click on any element in Matrix C":state.solution}</p>
