@@ -14,7 +14,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 
 function refreshMessages() {
-  const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
+  const getRandomInt = (max:number) => Math.floor(Math.random() * Math.floor(max));
 
   return Array.from(new Array(50)).map(
     () => messageExamples[getRandomInt(messageExamples.length)],
@@ -23,7 +23,7 @@ function refreshMessages() {
 
 export default function FixedBottomNavigation() {
   const [value, setValue] = React.useState(0);
-  const ref = React.useRef(null);
+  const ref = React.useRef<HTMLDivElement>(document.createElement("div"));
   const [messages, setMessages] = React.useState(() => refreshMessages());
 
   React.useEffect(() => {

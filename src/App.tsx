@@ -14,6 +14,34 @@ import ResetIcon from "@mui/icons-material/SettingsBackupRestore"
 import SwapIcon from "@mui/icons-material/SwapHoriz"
 import Divider from '@mui/material/Divider';
 
+interface MatrixObject{
+  matrix: number[][];
+  size: number[]
+}
+
+interface State{
+  m1: MatrixObject;
+  m2: MatrixObject;
+  answer: MatrixObject;
+  solution: string;
+  operation: number
+}
+
+interface VisualState {
+  selectedCell:VisualStateSelectedCell,
+}
+
+interface VisualStateSelectedCell{
+  question: VisualStateSelectedCellQA;
+  answer: VisualStateSelectedCellQA;
+}
+
+interface VisualStateSelectedCellQA{
+  i:null|number;
+  j:null|number;
+}
+
+
 function App() {
   const formulas = [
                     <p>C<sub>ij</sub> = A<sub>ij</sub> + B<sub>ij</sub></p>, 
@@ -21,7 +49,7 @@ function App() {
                     <p>C<sub>ij</sub> = A<sub>ij</sub> * B<sub>ij</sub></p>
   ]
                   
-  const initialState = {
+  const initialState:State = {
     m1:{matrix:[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], size:[4,4]}, 
     m2:{matrix:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]], size:[4,4]}, 
     answer:{matrix:[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], size:[4,4]}, 
@@ -50,12 +78,19 @@ function App() {
       }
   }
 
+  const getMatrixFromState = (name:string):number[][] => {
+    let matrix: number[][] = initialState.m1.matrix;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    name==="m1"?(matrix = [...state.m1.matrix]):(name==="m2"?matrix = [...state.m2.matrix]:null)
+    return matrix;
+  }
+
   //handle changes in the size of a matrix
   const modifyMatrix = (name:string, rows:number, columns:number) => {
     if(rows>6 || columns>6 || rows<1 || columns<1) return;
     
     //copy old matrix to modify from state
-    const matrix:number[][] = [...state[name].matrix]
+    const matrix:number[][] = getMatrixFromState(name);
 
     //remove rows
     while(matrix.length>rows){
@@ -89,15 +124,15 @@ function App() {
     updateState(name, {matrix,size:[matrix.length, matrix[0].length]});
   }
 
-  const initialVisualStates = {selectedCell:{question:{i:null,j:null}, answer:{i:null,j:null}}}
+  const initialVisualStates:VisualState = {selectedCell:{question:{i:null,j:null}, answer:{i:null,j:null}}}
 
   const [visualState, setVisualState] = useState(initialVisualStates);
   const [state, setState] = useState(initialState);
   const [showError, setShowError] = useState(false);
 
   //handle changes in the elements of a matrix
-  const updateMatrix = (value:string, i:number, j:number, name:string) => {
-    let matrix = [...state[name].matrix];
+  const updateMatrix = (value:string, i:number, j:number, name:keyof typeof state) => {
+    const matrix:number[][] = getMatrixFromState(name);
     matrix[i][j] = parseInt(value)===0?0:(parseInt(value)|| matrix[i][j]);
     updateState(name,{matrix,size:[matrix.length,matrix[0].length]})
   }
@@ -194,9 +229,9 @@ function App() {
       >
 
       <MatrixArithmeticArea>
-        <Box>
+        <Box >
           <Box sx ={{
-            display:"flex", flexDirection:"row",  justifyContent:"stretch", backgroundColor:"white", alignItems:"center"  }}>
+            display:"flex", flexDirection:"row",  justifyContent:"stretch", backgroundColor:"white", alignItems:"flex-start"  }}>
             <Matrix mat={state.m1} name={"m1"} operation={state.operation} visualise={visualState.selectedCell} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
             <ArithmeticSign sign={state.operation}/>
             <Matrix mat={state.m2} name={"m2"} operation={state.operation} visualise={visualState.selectedCell} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
@@ -222,7 +257,7 @@ function App() {
           </BottomNavigation>
         </Box>
         <ArithmeticSign sign={0} style={{position:"relative", bottom:"44px"}}/>
-        <Box>
+        <Box >
         {showError?<ErrorMessage/>:
         <><Matrix mat={state.answer} visualise={visualState.selectedCell}  name={"answer"} operation={state.operation} showSolution={showSolution} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
  
