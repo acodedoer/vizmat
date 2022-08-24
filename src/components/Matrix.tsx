@@ -1,5 +1,5 @@
 import TextField from '@mui/material/TextField';
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import "../App.css";
 import MatrixDimensions from './MatrixDimension';
 
@@ -19,11 +19,20 @@ const MatrixElementInputTextField = styled(TextField)({
     border:'0'
 });
 
-const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, modifyMatrix}:any) => {
+const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, modifyMatrix, showError = false}:any) => {
     const matrix = mat.matrix;
   
     return(
     <div style={{padding:"1em"}}>
+        {showError?
+        <>
+            <MatrixDimensions name={name} rows={matrix.length} columns = {matrix[0].length} modifyMatrix ={modifyMatrix}/>
+            <table className='matrix'>
+                This operation is not possible
+            </table>
+        </>
+        :
+        <>
         <MatrixDimensions name={name} rows={matrix.length} columns = {matrix[0].length} modifyMatrix ={modifyMatrix}/>
         <table className='matrix'>
           <tbody>
@@ -35,15 +44,15 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
                         style={{
                             fontFamily: "Roboto Flex",
                             border:0,
-                            backgroundColor: operation==3?
-                                                name=="m1"?
-                                                    (i==visualise.question.i? 
+                            backgroundColor: operation===3?
+                                                name==="m1"?
+                                                    (i===visualise.question.i? 
                                                         `hsl(60, ${100 - 100/matrix[0].length*j}%, 50%)`:
                                                         ""):
-                                                    (j==visualise.question.j?
+                                                    (j===visualise.question.j?
                                                         `hsl(60, ${100 - 100/matrix.length*i}%, 50%)`:
                                                         ""):
-                                                    (i==visualise.question.i && j == visualise.question.j)?
+                                                    (i===visualise.question.i && j === visualise.question.j)?
                                                         "red":
                                                         ""
                                                     }
@@ -63,6 +72,8 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
             )}
           </tbody>
         </table>
+        </>
+        }
         </div>
     )
           

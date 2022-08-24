@@ -1,10 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useState, useEffect} from "react"
 import { matrixAddition, matrixSubtraction,matrixMultiplication} from "./utils";
 import Matrix from "./components/Matrix";
-import ErrorMessage from "./components/ErrorMessage";
-import { MatrixArithmeticArea } from "./components/MatrixArithmetic";
 import "./App.css";
-import { Container } from "@mui/system";
 import { BottomNavigation, BottomNavigationAction, Box, Card, Paper } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import SubtractIcon from '@mui/icons-material/Remove';
@@ -13,7 +11,7 @@ import ArithmeticSign from "./components/ArithmeticSign";
 import ResetIcon from "@mui/icons-material/SettingsBackupRestore"
 import SwapIcon from "@mui/icons-material/SwapHoriz"
 import Divider from '@mui/material/Divider';
-import { JsxElement } from "typescript";
+
 
 interface MatrixObject{
   matrix: number[][];
@@ -23,7 +21,9 @@ interface MatrixObject{
 interface Solution{
   question:any;
   answer: String;
+  formula: JSX.Element[]
 }
+
 interface State{
   m1: MatrixObject;
   m2: MatrixObject;
@@ -48,18 +48,12 @@ interface VisualStateSelectedCellQA{
 
 
 function App() {
-  const formulas = [
-                    <p>C<sub>ij</sub> = A<sub>ij</sub> + B<sub>ij</sub></p>, 
-                    <p>C<sub>ij</sub> = A<sub>ij</sub> - B<sub>ij</sub></p>,
-                    <p>C<sub>ij</sub> = A<sub>ij</sub> * B<sub>ij</sub></p>
-  ]
-
-                  
+                 
   const initialState:State = {
     m1:{matrix:[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], size:[4,4]}, 
     m2:{matrix:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]], size:[4,4]}, 
     answer:{matrix:[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], size:[4,4]}, 
-    solution:{answer:"", question:<span></span>}, 
+    solution:{answer:"", question:<span></span>, formula:[<p></p>]}, 
     operation:1,
   }
 
@@ -151,6 +145,16 @@ function App() {
     setState({...state,m1:m1_,m2:m2_})
   }
 
+    //perform the chosen opetation if possible and update the answer matrix
+  const updateAnswer = () =>{
+    if(isOperationValid()){
+      setShowError(false);
+      const matrix:number[][] = performOperation();
+      setState({...state, answer:{matrix,size:[matrix.length, matrix[0].length]}, solution:initialState.solution});
+    }
+    else setShowError(true);
+  }
+  
   useEffect(() => {
     updateAnswer();
   }, [state.operation, state.m1, state.m2]);
@@ -170,30 +174,24 @@ function App() {
     return false
   }
 
-  //perform the chosen opetation if possible and update the answer matrix
-  const updateAnswer = () =>{
-    if(isOperationValid()){
-      setShowError(false);
-      const matrix:number[][] = performOperation();
-      updateState("answer",{matrix,size:[matrix.length, matrix[0].length]})
-    }
-    else setShowError(true);
-  }
 
   //highligh appropriat elements in A and B if an element in C is clicked
   const showSolution = (m:number, n:number) =>{
     setVisualState({selectedCell:{question:{i:m,j:n}, answer:{i:m,j:n}}});
-    let solution = {answer:"", question:<span>C<sub>{m}{n}</sub></span>};
-    if(state.operation == 1){
+    let solution = {answer:"", question:<span>C<sub>{m+1}{n+1}</sub></span>, formula:[<span>C<sub>{m+1}{n+1}</sub> = </span>]};
+    if(state.operation === 1){
+      solution.formula.push(<span>A<sub>{m+1}{n+1}</sub> + B<sub>{m+1}{n+1}</sub></span>)
       solution.answer=`${state.m1.matrix[m][n]} + ${state.m2.matrix[m][n]} = ${state.m1.matrix[m][n] + state.m2.matrix[m][n]}`;
     }
-    else if (state.operation == 2){
+    else if (state.operation === 2){
+      solution.formula.push(<span>A<sub>{m+1}{n+1}</sub> - B<sub>{m+1}{n+1}</sub></span>)
       solution.answer=`${state.m1.matrix[m][n]} - ${state.m2.matrix[m][n]} = ${state.m1.matrix[m][n] - state.m2.matrix[m][n]}`; 
     }
-    else if (state.operation == 3){
+    else if (state.operation === 3){
       let plus = " + ";
       let equalToAnswer = ` = ${state.answer.matrix[m][n]}`
       for(let i =0; i<state.m1.matrix[m].length; i++){
+        solution.formula.push(<span>A<sub>{m+1}{i+1}</sub> x B<sub>{i+1}{n+1}</sub> {i<state.m1.matrix[m].length-1?plus:null} </span>)
         solution.answer += state.m1.matrix[m][i]+ " x " +state.m2.matrix[i][n]+ `${i<state.m1.matrix[m].length-1?plus:equalToAnswer}`;
       }
     }
@@ -223,36 +221,10 @@ function App() {
 
 
   return (
-    <div 
-      style={{
-        backgroundColor:"#f3f6f9",
-        display:"flex",
-        flexDirection:"column",
-        alignItems:"center", 
-        justifyContent:"center", 
-        width:"100vw", 
-        height:"100vh",
-        margin:0,
-      }}
-    >
+    <div className="container">
       <h1 className="header">vismat</h1>
-      <Card sx={{
-        minHeight:"450px",
-        backgroundColor:"white",
-        minWidth:"1300px",
-        display:"flex",
-        flexDirection:"column",
-        justifyContent:"center",
-        alignItems:"center",
-      }}>
-      <Box sx={{
-        display:"flex",
-        flexDirection:"row",
-        justifyContent:"center",
-        alignItems:"flex-start",
-        minHeight:"450px",
-        backgroundColor:"white",
-      }}>
+      <Card className="mainCard">
+      <Box className="mainBox">
         <Matrix mat={state.m1} name={"m1"} operation={state.operation} visualise={visualState.selectedCell} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
         
         <ArithmeticSign sign={state.operation}/>
@@ -261,20 +233,17 @@ function App() {
 
         <ArithmeticSign sign={0}/>
 
-        {showError?
-          <ErrorMessage/>
-          :
-          <Matrix mat={state.answer} visualise={visualState.selectedCell}  name={"answer"} operation={state.operation} showSolution={showSolution} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
-        }
+        <Matrix mat={state.answer} visualise={visualState.selectedCell}  name={"answer"} operation={state.operation} showSolution={showSolution} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} showError={showError} style={{flexBasis: "40%", flexShrink:0}}/>
+
       </Box>
       
-      <Paper variant="outlined" style={{margin:"16px", height:"93px", width:720}}>
+      <Paper variant="outlined" className="solutionPaper">
           <div style={{textAlign:"center"}}>
-            <p className="para">{formulas[state.operation - 1]}</p>
+            <p>{state.solution.formula.map((line)=>line)}</p>
             <p className="para">{state.solution.answer===""?"Click on any element in Matrix C":state.solution.question} {state.solution.answer!==""?`= ${state.solution.answer}`:""} </p>
           </div>
         </Paper>
-        <Paper sx={{ absolute: 'relative', bottom: 0, left: 0, right: 0, width:"100%", marginTop:"16px" }} elevation={3}>
+        <Paper elevation={3}>
         <BottomNavigation
           value={state.operation-1}
           onChange={(event, newValue) => {

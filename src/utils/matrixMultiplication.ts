@@ -11,7 +11,6 @@ const matrixMultiplication = (m1:number[][], m2:number[][]) =>{
       }
       matrix.push(row);
     }
-    console.log(matrix)
     return matrix;
 }
 
