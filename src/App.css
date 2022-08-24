@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600&family=Roboto+Flex:opsz@8..144&display=swap');
+
+*{
+  font-family: 'Exo 2', sans-serif;
+}
+
+
 .matrix {
   position: relative;
   margin: auto;
@@ -22,4 +29,15 @@
 .matrix td {   
   text-align: center;
   padding: 0;
+}
+
+.para{
+   font-weight: 600;
+   font-size: 18px;
+}
+
+.header {
+  position: absolute;
+  top:0px;
+  font-size: 48px;
 }

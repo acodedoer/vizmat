@@ -33,6 +33,7 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
                     <td>
                     <MatrixElementInputTextField  
                         style={{
+                            fontFamily: "Roboto Flex",
                             border:0,
                             backgroundColor: operation==3?
                                                 name=="m1"?
