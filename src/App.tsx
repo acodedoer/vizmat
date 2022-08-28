@@ -215,6 +215,7 @@ function App() {
 
 const AppContainer = styled(Box)`
   width: 100vw;
+  min-width:1300px;
   height:100vh;
   display: flex;
   flex-direction:column;
@@ -228,5 +229,10 @@ const AppContainer = styled(Box)`
   -webkit-background-size: 50px 50px;
   -moz-background-size: 50px 50px;
   background-size: 50px 50px;
+
+  @media (max-width:700px){
+    min-width: 100vw;
+    height:auto;
+  }
 `
 export default App;

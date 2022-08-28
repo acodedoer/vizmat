@@ -6,13 +6,13 @@ import ResetIcon from "@mui/icons-material/SettingsBackupRestore"
 import SwapIcon from "@mui/icons-material/SwapHoriz"
 const OperationalIcons = ({operation, initialState, setState, swapMatrices, updateState}: any) => {
     return(
-        <Paper elevation={3} sx={{height:"80px", width:"100%"}}>
+        <Paper elevation={3} sx={{height:"80px", width:"90%"}}>
             <BottomNavigation
                 value={operation-1}
                 onChange={(event, newValue) => {
                     updateState("operation",newValue+1)
                 }}
-                sx={{height:"80px", width:"100%"}}
+                sx={{height:"80px", width:"90%"}}
                 showLabels
             >
                 <BottomNavigationAction className="nav" label="Add" icon={<AddIcon/>}/>

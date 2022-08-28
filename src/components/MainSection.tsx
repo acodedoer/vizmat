@@ -13,13 +13,14 @@ const MainSection = ({children}:BasicPropsType):JSX.Element => {
 export const CustomDiv = styled(Box)`
     background-color:white;
     min-width:1300px;
+    min-height:450px;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
 
     @media (max-width: 700px) {
-        max-width: 100%;
+        min-width: 90%;
     }
 `
 export default MainSection;

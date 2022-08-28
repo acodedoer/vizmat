@@ -19,7 +19,7 @@ const theme = createTheme({
 const SiteTitle = ({title="vismat"}) => {
     return(
         <ThemeProvider theme={theme}>
-        <Box sx={{ width:"100vw"}}>
+        <Box sx={{ width:"100%"}}>
             <AppBar position="static" enableColorOnDark color="primary">
             <Toolbar>
                 <IconButton

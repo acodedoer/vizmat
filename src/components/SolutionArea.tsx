@@ -15,7 +15,7 @@ const SolutionPaper = styled(Paper)`
     margin:16px; 
     height:93px;
     width:720px;
-    @media (max-width: 600px) {      
+    @media (max-width: 700px) {      
         min-height:150px;
         width:90%
     }
