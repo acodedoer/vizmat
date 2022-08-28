@@ -73,17 +73,19 @@ const MatrixDiv = styled('div')`
 const MatrixElementInputTextField = styled(TextField)({
     '& .Mui-disabled': {
         fontWeight:600, 
-        color:"#0000ff",
         cursor:"pointer"
     },
     '& .MuiOutlinedInput-input': {
         padding: '9px',
         textAlign: 'center',
         width:'23px',
-        border:'0'
+        border:'0',
+        color:"#001e3c",
+        // backgroundColor:"#e7ebf0"
     },
     margin:"4px",
-    border:'0'
+    border:'0',
+    color: "#001e3c"
 });
 
 export default Matrix;

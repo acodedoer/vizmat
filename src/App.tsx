@@ -17,6 +17,7 @@ import { MatrixArithmeticArea } from "./components/MatrixArithmetic";
 import type {MatrixObject, SolutionType,State,VisualState} from "./types/types"
 import SolutionArea from "./components/SolutionArea";
 import OperationalIcons from "./components/OperationalIcons";
+import BackgroundAnimation from "./components/BackgroundAnimation";
 
 
 
@@ -192,6 +193,7 @@ function App() {
   return (
     <AppContainer>
       <SiteTitle/>
+      <BackgroundAnimation/>
         <MainSection>
           <MatrixArithmeticArea>
             <Matrix mat={state.m1} name={"m1"} operation={state.operation} visualise={visualState.selectedCell} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>

@@ -13,7 +13,7 @@ const OperationalIcons = ({operation, initialState, setState, swapMatrices, upda
                 onChange={(event, newValue) => {
                     updateState("operation",newValue+1)
                 }}
-                sx={{height:"80px", width:"90%"}}
+                sx={{height:"80px", width:"100%"}}
                 showLabels
             >
                 <BottomNavigationAction className="nav" label="Add" icon={<AddIcon/>}/>
