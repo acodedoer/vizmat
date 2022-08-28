@@ -1,19 +1,19 @@
-import { Box } from "@mui/system";
-import React, { ReactElement } from "react";
+import {styled } from "@mui/system";
+import { CustomDiv } from "./MainSection";
+import type { BasicPropsType } from '../types/types'
 
-export const MatrixArithmeticArea = (props:any) => {
+export const MatrixArithmeticArea = ({children}: BasicPropsType) => {
     return(
-     <Box 
-        sx={{
-            backgroundColor:'white',
-            width:"100%",
-            display:"flex",
-            flexDirection:"row",
-            alignItems:"flex-start",
-            justifyContent:"center"
-        }}
-        >
-        {props.children}
-     </Box>   
+     <CustomCustomDiv>
+        {children}
+     </CustomCustomDiv>   
     )
 }
+
+const CustomCustomDiv = styled(CustomDiv)`
+    flex-Direction:row;
+    @media (max-width:700px){
+        flex-direction:column;
+    }
+`
+export default MatrixArithmeticArea;

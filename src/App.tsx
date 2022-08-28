@@ -2,8 +2,9 @@
 import {useState, useEffect} from "react"
 import { matrixAddition, matrixSubtraction,matrixMultiplication} from "./utils";
 import Matrix from "./components/Matrix";
+import SiteTitle from "./components/SiteTitle";
 import "./App.css";
-import { BottomNavigation, BottomNavigationAction, Box, Card, Paper } from "@mui/material";
+import { BottomNavigation, BottomNavigationAction, Box, Card, Paper, styled } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import SubtractIcon from '@mui/icons-material/Remove';
 import MultiplyIcon from '@mui/icons-material/Close';
@@ -11,40 +12,13 @@ import ArithmeticSign from "./components/ArithmeticSign";
 import ResetIcon from "@mui/icons-material/SettingsBackupRestore"
 import SwapIcon from "@mui/icons-material/SwapHoriz"
 import Divider from '@mui/material/Divider';
+import MainSection from "./components/MainSection";
+import { MatrixArithmeticArea } from "./components/MatrixArithmetic";
+import type {MatrixObject, SolutionType,State,VisualState} from "./types/types"
+import SolutionArea from "./components/SolutionArea";
+import OperationalIcons from "./components/OperationalIcons";
 
 
-interface MatrixObject{
-  matrix: number[][];
-  size: number[]
-}
-
-interface Solution{
-  question:any;
-  answer: String;
-  formula: JSX.Element[]
-}
-
-interface State{
-  m1: MatrixObject;
-  m2: MatrixObject;
-  answer: MatrixObject;
-  solution: Solution
-  operation: number
-}
-
-interface VisualState {
-  selectedCell:VisualStateSelectedCell,
-}
-
-interface VisualStateSelectedCell{
-  question: VisualStateSelectedCellQA;
-  answer: VisualStateSelectedCellQA;
-}
-
-interface VisualStateSelectedCellQA{
-  i:null|number;
-  j:null|number;
-}
 
 
 function App() {
@@ -215,57 +189,44 @@ function App() {
   else return state.answer.matrix
   }
 
-
-
-
-
-
   return (
-    <div className="container">
-      <h1 className="header">vismat</h1>
-      <Card className="mainCard">
-      <Box className="mainBox">
-        <Matrix mat={state.m1} name={"m1"} operation={state.operation} visualise={visualState.selectedCell} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
-        
-        <ArithmeticSign sign={state.operation}/>
-        
-        <Matrix mat={state.m2} name={"m2"} operation={state.operation} visualise={visualState.selectedCell} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
-
-        <ArithmeticSign sign={0}/>
-
-        <Matrix mat={state.answer} visualise={visualState.selectedCell}  name={"answer"} operation={state.operation} showSolution={showSolution} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} showError={showError} style={{flexBasis: "40%", flexShrink:0}}/>
-
-      </Box>
-      
-      <Paper variant="outlined" className="solutionPaper">
-          <div style={{textAlign:"center"}}>
-            <p>{state.solution.formula.map((line)=>line)}</p>
-            <p className="para">{state.solution.answer===""?"Click on any element in Matrix C":state.solution.question} {state.solution.answer!==""?`= ${state.solution.answer}`:""} </p>
-          </div>
-        </Paper>
-        <Paper elevation={3}>
-        <BottomNavigation
-          value={state.operation-1}
-          onChange={(event, newValue) => {
-            updateState("operation",newValue+1)
-          }}
-          sx={{
-            height:"80px",
-            fontFamily:"Exo 2"
-          }}
-          showLabels
-        >
-          <BottomNavigationAction className="nav" label="Add" icon={<AddIcon/>}/>
-          <BottomNavigationAction className="nav" label="Subtract" icon={<SubtractIcon/>}/>
-          <BottomNavigationAction className="nav" label="Multiply" icon={<MultiplyIcon/>}/>
-          <Divider orientation="vertical" flexItem />
-          <BottomNavigationAction className="nav" label="Reset" icon={<ResetIcon/>} onClick={()=>setState(initialState)} />
-          <BottomNavigationAction className="nav" label="Swap" icon={<SwapIcon />} onClick={swapMatrices} />
-        </BottomNavigation>
-      </Paper >
-      </Card>
-    </div>
+    <AppContainer>
+      <SiteTitle/>
+        <MainSection>
+          <MatrixArithmeticArea>
+            <Matrix mat={state.m1} name={"m1"} operation={state.operation} visualise={visualState.selectedCell} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
+            <ArithmeticSign sign={state.operation}/>
+            <Matrix mat={state.m2} name={"m2"} operation={state.operation} visualise={visualState.selectedCell} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
+            <ArithmeticSign sign={0}/>
+            <Matrix mat={state.answer} visualise={visualState.selectedCell}  name={"answer"} operation={state.operation} showSolution={showSolution} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} showError={showError} style={{flexBasis: "40%", flexShrink:0}}/>
+          </MatrixArithmeticArea>
+          <SolutionArea solution={state.solution}/>
+          <OperationalIcons 
+            operation={state.operation}
+            initialState = {initialState}
+            setState = {setState}
+            swapMatrices ={swapMatrices}
+            updateState = {updateState}/>
+      </MainSection>
+      <div></div>
+    </AppContainer>
   );
 }
 
+const AppContainer = styled(Box)`
+  width: 100vw;
+  height:100vh;
+  display: flex;
+  flex-direction:column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0ae;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.5, transparent), to(transparent));
+  background-image: -moz-linear-gradient(rgba(255, 255, 255, .2) 50%, transparent 50%, transparent);
+  background-image: -o-linear-gradient(rgba(255, 255, 255, .2) 50%, transparent 50%, transparent);
+  background-image: linear-gradient(rgba(255, 255, 255, .2) 50%, transparent 50%, transparent);
+  -webkit-background-size: 50px 50px;
+  -moz-background-size: 50px 50px;
+  background-size: 50px 50px;
+`
 export default App;
