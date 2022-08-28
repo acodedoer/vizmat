@@ -11,7 +11,7 @@ export const MatrixArithmeticArea = ({children}: BasicPropsType) => {
     )
 }
 
-const CustomCustomDiv = styled(Box)`
+const CustomCustomDiv = styled(CustomDiv)`
     flex-Direction:row;
     align-items:flex-start;
     

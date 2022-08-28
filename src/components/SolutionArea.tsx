@@ -16,6 +16,7 @@ const SolutionPaper = styled(Paper)`
     height:93px;
     width:720px;
     @media (max-width: 700px) {      
+        position: sticky;
         min-height:150px;
         width:90%
     }
