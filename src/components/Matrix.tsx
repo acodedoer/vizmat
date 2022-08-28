@@ -23,23 +23,35 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
                 <tr key={`${i}`}>
                 {x.map((y:any,j:any)=> 
                     <td>
-                    <MatrixElementInputTextField  
-                        style={{
-                            fontFamily: "Roboto Flex",
-                            border:0,
+                    <MatrixElementInputTextField 
+                        sx={{
+                            '& .MuiOutlinedInput-input': {
+                                color: operation===3?
+                                            name==="m1"?
+                                                (i===visualise.question.i? 
+                                                    "white":
+                                                    ""):
+                                                (j===visualise.question.j?
+                                                    "white":
+                                                    ""):
+                                                (i===visualise.question.i && j === visualise.question.j)?
+                                                    "white":
+                                                    ""                                        
+                            },
+                            borderColor:"red",
                             backgroundColor: operation===3?
-                                                name==="m1"?
-                                                    (i===visualise.question.i? 
-                                                        `hsl(60, ${100 - 100/matrix[0].length*j}%, 50%)`:
-                                                        ""):
-                                                    (j===visualise.question.j?
-                                                        `hsl(60, ${100 - 100/matrix.length*i}%, 50%)`:
-                                                        ""):
-                                                    (i===visualise.question.i && j === visualise.question.j)?
-                                                        "red":
-                                                        ""
-                                                    }
+                                            name==="m1"?
+                                                (i===visualise.question.i? 
+                                                    "#001e3c":
+                                                    ""):
+                                                (j===visualise.question.j?
+                                                    "#001e3c":
+                                                    ""):
+                                                (i===visualise.question.i && j === visualise.question.j)?
+                                                    "#001e3c":
+                                                    ""
                                                 }
+                                            }
                         value={y}
                         size="small" 
                         key={`${i}${j}`}
@@ -71,7 +83,7 @@ const MatrixDiv = styled('div')`
 `
 
 const MatrixElementInputTextField = styled(TextField)({
-    '& .Mui-disabled': {
+    '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled': {
         fontWeight:600, 
         cursor:"pointer"
     },
@@ -80,12 +92,12 @@ const MatrixElementInputTextField = styled(TextField)({
         textAlign: 'center',
         width:'23px',
         border:'0',
-        color:"#001e3c",
-        // backgroundColor:"#e7ebf0"
+        color:"inherit",
     },
     margin:"4px",
     border:'0',
-    color: "#001e3c"
+    color:"#ff00ff",
+
 });
 
 export default Matrix;
