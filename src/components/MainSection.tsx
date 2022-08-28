@@ -11,7 +11,7 @@ const MainSection = ({children}:BasicPropsType):JSX.Element => {
 }
 
 export const CustomDiv = styled(Box)`
-    background-color:white;
+    background-color:#f3f6f9;
     min-width:1300px;
     min-height:450px;
     display:flex;
@@ -21,6 +21,7 @@ export const CustomDiv = styled(Box)`
 
     @media (max-width: 700px) {
         min-width: 90%;
+        margin:32px 0 112px 0;
     }
 `
 export default MainSection;

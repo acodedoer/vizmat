@@ -1,29 +1,12 @@
-import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
+import {TextField, styled} from '@mui/material';
 import "../App.css";
 import MatrixDimensions from './MatrixDimension';
-
-const MatrixElementInputTextField = styled(TextField)({
-    '& .Mui-disabled': {
-        fontWeight:600, 
-        color:"#0000ff",
-        cursor:"pointer"
-    },
-    '& .MuiOutlinedInput-input': {
-        padding: '9px',
-        textAlign: 'center',
-        width:'23px',
-        border:'0'
-    },
-    margin:"4px",
-    border:'0'
-});
 
 const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, modifyMatrix, showError = false}:any) => {
     const matrix = mat.matrix;
   
     return(
-    <div style={{padding:"1em"}}>
+    <MatrixDiv>
         {showError?
         <>
             <MatrixDimensions name={name} rows={matrix.length} columns = {matrix[0].length} modifyMatrix ={modifyMatrix}/>
@@ -74,10 +57,34 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
         </table>
         </>
         }
-        </div>
+        </MatrixDiv>
     )
           
 }
+
+const MatrixDiv = styled('div')`
+    padding: 1em;
+
+    @media (max-width:700px){
+        padding:0
+    }
+`
+
+const MatrixElementInputTextField = styled(TextField)({
+    '& .Mui-disabled': {
+        fontWeight:600, 
+        color:"#0000ff",
+        cursor:"pointer"
+    },
+    '& .MuiOutlinedInput-input': {
+        padding: '9px',
+        textAlign: 'center',
+        width:'23px',
+        border:'0'
+    },
+    margin:"4px",
+    border:'0'
+});
 
 export default Matrix;
 

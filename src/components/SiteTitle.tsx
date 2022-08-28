@@ -31,8 +31,8 @@ const SiteTitle = ({title="vismat"}) => {
                 >
                 <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Vismat
+                <Typography variant="h4" component="div" sx={{ flexGrow: 1, fontFamily:"'Exo 2', sans-serif" }}>
+                    vismat
                 </Typography>
             </Toolbar>
             </AppBar>

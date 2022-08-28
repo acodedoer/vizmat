@@ -200,7 +200,7 @@ function App() {
             <ArithmeticSign sign={0}/>
             <Matrix mat={state.answer} visualise={visualState.selectedCell}  name={"answer"} operation={state.operation} showSolution={showSolution} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} showError={showError} style={{flexBasis: "40%", flexShrink:0}}/>
           </MatrixArithmeticArea>
-          <SolutionArea solution={state.solution}/>
+          <SolutionArea solution={state.solution} operation={state.operation}/>
           <OperationalIcons 
             operation={state.operation}
             initialState = {initialState}
@@ -221,14 +221,6 @@ const AppContainer = styled(Box)`
   flex-direction:column;
   justify-content: space-between;
   align-items: center;
-  background-color: #0ae;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.5, transparent), to(transparent));
-  background-image: -moz-linear-gradient(rgba(255, 255, 255, .2) 50%, transparent 50%, transparent);
-  background-image: -o-linear-gradient(rgba(255, 255, 255, .2) 50%, transparent 50%, transparent);
-  background-image: linear-gradient(rgba(255, 255, 255, .2) 50%, transparent 50%, transparent);
-  -webkit-background-size: 50px 50px;
-  -moz-background-size: 50px 50px;
-  background-size: 50px 50px;
 
   @media (max-width:700px){
     min-width: 100vw;

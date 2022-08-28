@@ -18,6 +18,7 @@ const CustomCustomDiv = styled(CustomDiv)`
     @media (max-width:700px){
         flex-direction:column;
         align-items:center;
+        margin:0;
     }
 `
 export default MatrixArithmeticArea;
