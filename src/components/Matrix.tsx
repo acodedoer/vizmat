@@ -24,7 +24,29 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
                 {x.map((y:any,j:any)=> 
                     <td>
                     <MatrixElementInputTextField 
+                        // sx={{
+                        //     backgroundColor: operation==3?
+                        //     name=="m1"?
+                        //         (i==visualise.question.i? 
+                        //             `hsl(60, ${100 - 100/matrix[0].length*j}%, 50%)`:
+                        //             ""):
+                        //         (j==visualise.question.j?
+                        //             `hsl(60, ${100 - 100/matrix.length*i}%, 50%)`:
+                        //             ""):
+                        //         (i==visualise.question.i && j == visualise.question.j)?
+                        //             "red":
+                        //             ""
+                        //         }
+                        //     }
+                        
                         sx={{
+                            '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled': {
+                                "-webkit-text-fill-color":
+                                    (i===visualise.question.i && j === visualise.question.j)?
+                                        "white":
+                                        ""
+                            },
+
                             '& .MuiOutlinedInput-input': {
                                 color: operation===3?
                                             name==="m1"?
@@ -38,18 +60,20 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
                                                     "white":
                                                     ""                                        
                             },
-                            borderColor:"red",
-                            backgroundColor: operation===3?
-                                            name==="m1"?
-                                                (i===visualise.question.i? 
-                                                    "#001e3c":
-                                                    ""):
-                                                (j===visualise.question.j?
-                                                    "#001e3c":
-                                                    ""):
+                            backgroundColor: operation===3?(
+                                                name==="m1"?
+                                                    (i===visualise.question.i? 
+                                                        "#001e3c":
+                                                        "#e7ebf0"):
+                                                name==="m2"?
+                                                    (j===visualise.question.j?
+                                                        "#001e3c":
+                                                        "#e7ebf0"):
+                                                (i===visualise.question.i && j===visualise.question.j ? "#001e3c":"#e7ebf0")
+                                            ):
                                                 (i===visualise.question.i && j === visualise.question.j)?
                                                     "#001e3c":
-                                                    ""
+                                                    "#e7ebf0"
                                                 }
                                             }
                         value={y}
@@ -85,14 +109,16 @@ const MatrixDiv = styled('div')`
 const MatrixElementInputTextField = styled(TextField)({
     '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled': {
         fontWeight:600, 
-        cursor:"pointer"
+        cursor:"pointer",
+        "-webkit-text-fill-color":"#001e3c"
     },
     '& .MuiOutlinedInput-input': {
         padding: '9px',
         textAlign: 'center',
         width:'23px',
         border:'0',
-        color:"inherit",
+        fontWeight:600,
+        color:"#001e3c",
     },
     margin:"4px",
     border:'0',

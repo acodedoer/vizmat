@@ -61,7 +61,9 @@ function App() {
   }
 
   //handle changes in the size of a matrix
-  const modifyMatrix = (name:string, rows:number, columns:number) => {
+  const modifyMatrix = (name:string, rows:any, columns:any) => {
+    if(rows===undefined||rows===""||rows===null) rows = 1;
+    if(columns===undefined||columns===""||rows===null) columns = 1;
     if(rows>6 || columns>6 || rows<1 || columns<1) return;
     
     //copy old matrix to modify from state
