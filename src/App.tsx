@@ -202,7 +202,7 @@ function App() {
             <ArithmeticSign sign={state.operation}/>
             <Matrix mat={state.m2} name={"m2"} operation={state.operation} visualise={visualState.selectedCell} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} style={{flexBasis: "40%", flexShrink:0}}/>
             <ArithmeticSign sign={0}/>
-            <Matrix mat={state.answer} visualise={visualState.selectedCell}  name={"answer"} operation={state.operation} showSolution={showSolution} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} showError={showError} style={{flexBasis: "40%", flexShrink:0}}/>
+            <Matrix mat={state.answer} m1={state.m1.matrix} m2={state.m2.matrix} visualise={visualState.selectedCell}  name={"answer"} operation={state.operation} showSolution={showSolution} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} showError={showError} style={{flexBasis: "40%", flexShrink:0}}/>
           </MatrixArithmeticArea>
           <SolutionArea solution={state.solution} operation={state.operation}/>
           <OperationalIcons 

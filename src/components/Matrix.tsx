@@ -1,8 +1,9 @@
 import {TextField, styled} from '@mui/material';
 import "../App.css";
+import ErrorMessage from './ErrorMessage';
 import MatrixDimensions from './MatrixDimension';
 
-const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, modifyMatrix, showError = false}:any) => {
+const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, modifyMatrix,m1, m2, showError = false}:any) => {
     const matrix = mat.matrix;
   
     return(
@@ -11,7 +12,7 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
         <>
             <MatrixDimensions name={name} rows={matrix.length} columns = {matrix[0].length} modifyMatrix ={modifyMatrix}/>
             <table className='matrix'>
-                This operation is not possible
+                <ErrorMessage operation={operation} m1={m1} m2={m2}/>
             </table>
         </>
         :
