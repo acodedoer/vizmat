@@ -10,7 +10,7 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
     <MatrixDiv>
         {showError?
         <>
-            <MatrixDimensions name={name} rows={matrix.length} columns = {matrix[0].length} modifyMatrix ={modifyMatrix}/>
+            <MatrixDimensions name={name} rows={matrix.length} columns = {matrix[0].length} modifyMatrix ={modifyMatrix} showError={showError}/>
             <table className='matrix'>
                 <ErrorMessage operation={operation} m1={m1} m2={m2}/>
             </table>

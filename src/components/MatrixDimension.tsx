@@ -1,19 +1,43 @@
-import { Input } from "@mui/material";
+import { Input, NativeSelect } from "@mui/material";
 
-const MatrixDimensions =  ({name="m1", rows=4, columns=4, modifyMatrix}:any) => {
+const SelectDimension = ({name,modifyMatrix,otherDimension,value,type, showError}:any) => {
+    return(
+        <NativeSelect
+            sx={{
+                width:"25px",
+                marginLeft:"12.5px", 
+                color:"#001e3c"
+            }}
+            disabled={name==="answer"?true:false}
+            value={showError&&name==="answer"?0:value}
+            inputProps={{
+            name: 'dimension',
+            id: 'select-dimension',
+            }}
+            onChange={(e)=>{
+                    if(type==="row")modifyMatrix(name, e.target.value as unknown as number, otherDimension)
+                    else if(type==="column")modifyMatrix(name, otherDimension, e.target.value as unknown as number)
+                }
+
+            }
+        >
+            {name==="answer"?<option value={0}></option>:null}
+            <option value={1}>1</option>
+            <option value={2}>2</option>
+            <option value={3}>3</option>
+            <option value={4}>4</option>
+            <option value={5}>5</option>
+            <option value={6}>6</option>
+        </NativeSelect>
+    )
+}
+const MatrixDimensions =  ({name="m1", rows=4, columns=4, modifyMatrix, showError}:any) => {
     return(
         <h2>{name==="m1"?"A":name==="m2"?"B":"C"}
             <sub>
-                <Input 
-                    sx={{".css-1x51dt5-MuiInputBase-input-MuiInput-input.Mui-disabled":{
-                        "-webkit-text-fill-color":"#001e3c"
-                    }}}
-                    type="number" style={{width:"25px",marginLeft:12.5, color:"#001e3c"}} value={rows} disabled={name==="answer"?true:false} onChange={(e)=>modifyMatrix(name, e.target.value, columns)}/>
+                <SelectDimension name={name} modifyMatrix={modifyMatrix} value={rows} otherDimension={columns} type={"row"} showError={showError}/>
                 <span>&#215;</span>
-                <Input
-                 sx={{".css-1x51dt5-MuiInputBase-input-MuiInput-input.Mui-disabled":{
-                    "-webkit-text-fill-color":"#001e3c"
-                }}} type="number" style={{width:"25px",marginLeft:12.5, color:"#001e3c"}} value={columns} disabled={name==="answer"?true:false} onChange={(e)=>modifyMatrix(name, rows, e.target.value)}/>
+                <SelectDimension name={name} modifyMatrix={modifyMatrix} value= {columns} otherDimension={rows} type={"column"} showError={showError}/>
             </sub>
         </h2>
     )
