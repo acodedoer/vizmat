@@ -9,7 +9,7 @@ export interface MatrixObject{
 
 export interface SolutionType{
 question:any;
-answer: String;
+answer: JSX.Element[]|never;
 formula: JSX.Element[]
 }
 

@@ -18,7 +18,10 @@ const SolutionArea  = ({solution,operation=0}:any):JSX.Element => {
         <SolutionPaper variant="outlined">
             <div style={{textAlign:"center"}}>
                 <p>{solution.formula.map((line:JSX.Element)=>line)}</p>
-                <p className="para">{solution.answer===""?"Click on any element in Matrix C":solution.question} {solution.answer!==""?`= ${solution.answer}`:""} </p>
+                {solution.answer.length===0?
+                <p>Click on any element in Matrix C</p>:
+                <p>{solution.answer.map((line:JSX.Element)=>line)}</p>
+                }
             </div>
       </SolutionPaper>
     )

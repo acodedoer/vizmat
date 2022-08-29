@@ -23,7 +23,7 @@ function App() {
     m1:{matrix:[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], size:[4,4]}, 
     m2:{matrix:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]], size:[4,4]}, 
     answer:{matrix:[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], size:[4,4]}, 
-    solution:{answer:"", question:<span></span>, formula:[<p></p>]}, 
+    solution:{answer:[], question:<span></span>, formula:[<p></p>]}, 
     operation:1,
   }
 
@@ -151,21 +151,22 @@ function App() {
   //highligh appropriat elements in A and B if an element in C is clicked
   const showSolution = (m:number, n:number) =>{
     setVisualState({selectedCell:{question:{i:m,j:n}, answer:{i:m,j:n}}});
-    let solution = {answer:"", question:<span>C<sub>{m+1}{n+1}</sub></span>, formula:[<span>C<sub>{m+1}{n+1}</sub> = </span>]};
+    let solution:SolutionType = {answer:[<span>C<sub>{m+1}{n+1}</sub> = </span>], question:<span>C<sub>{m+1}{n+1}</sub></span>, formula:[<span>C<sub>{m+1}{n+1}</sub> = </span>]};
     if(state.operation === 1){
       solution.formula.push(<span><SpanA>A<SubA>{m+1}{n+1}</SubA></SpanA> + <SpanB>B<SubB>{m+1}{n+1}</SubB></SpanB></span>)
-      solution.answer=`${state.m1.matrix[m][n]} + ${state.m2.matrix[m][n]} = ${state.m1.matrix[m][n] + state.m2.matrix[m][n]}`;
+      solution.answer.push(<span><SpanA>{state.m1.matrix[m][n]}</SpanA> + <SpanB>{state.m2.matrix[m][n]}</SpanB> = {state.m1.matrix[m][n] + state.m2.matrix[m][n]}</span>)
     }
     else if (state.operation === 2){
       solution.formula.push(<span><SpanA>A<SubA>{m+1}{n+1}</SubA></SpanA>  - <SpanB>B<SubB>{m+1}{n+1}</SubB></SpanB></span>)
-      solution.answer=`${state.m1.matrix[m][n]} - ${state.m2.matrix[m][n]} = ${state.m1.matrix[m][n] - state.m2.matrix[m][n]}`; 
+      solution.answer.push(<span><SpanA>{state.m1.matrix[m][n]}</SpanA> - <SpanB>{state.m2.matrix[m][n]}</SpanB> = {state.m1.matrix[m][n] + state.m2.matrix[m][n]}</span>)
     }
     else if (state.operation === 3){
       let plus = " + ";
       let equalToAnswer = ` = ${state.answer.matrix[m][n]}`
       for(let i =0; i<state.m1.matrix[m].length; i++){
-        solution.formula.push(<span>A<sub>{m+1}{i+1}</sub> x B<sub>{i+1}{n+1}</sub> {i<state.m1.matrix[m].length-1?plus:null} </span>)
-        solution.answer += state.m1.matrix[m][i]+ " x " +state.m2.matrix[i][n]+ `${i<state.m1.matrix[m].length-1?plus:equalToAnswer}`;
+        solution.formula.push(<span>(<SpanA>A<SubA>{m+1}{i+1}</SubA></SpanA> x <SpanB>B<SubB>{i+1}{n+1}</SubB></SpanB>) {i<state.m1.matrix[m].length-1?plus:null} </span>)
+        solution.answer.push(<>(<SpanA>{state.m1.matrix[m][i]}</SpanA> x <SpanB>{state.m2.matrix[i][n]}</SpanB>) {i<state.m1.matrix[m].length-1?plus:equalToAnswer}</>)
+
       }
     }
     
