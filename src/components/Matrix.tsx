@@ -48,6 +48,7 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
                         
                         sx={{
                             '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled': {
+                                color:"white",
                                 "-webkit-text-fill-color":
                                     (i===visualise.question.i && j === visualise.question.j)?
                                         "white":
