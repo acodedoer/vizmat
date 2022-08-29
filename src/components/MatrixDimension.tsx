@@ -33,14 +33,12 @@ const SelectDimension = ({name,modifyMatrix,otherDimension,value,type, showError
 }
 const MatrixDimensions =  ({name="m1", rows=4, columns=4, modifyMatrix, showError}:any) => {
     return(
-        <h2>{name==="m1"?"A":name==="m2"?"B":"C"}
-            {(showError && name==="answer")?null:
-            <sub>
+        <h2>{name==="m1"?"A":name==="m2"?"B":showError?"Not Possible":"C"}
+            <sub style={{visibility:(name==="answer"&&showError)?"hidden":"visible"}}>
                 <SelectDimension name={name} modifyMatrix={modifyMatrix} value={rows} otherDimension={columns} type={"row"} showError={showError}/>
                 <span>&#215;</span>
                 <SelectDimension name={name} modifyMatrix={modifyMatrix} value= {columns} otherDimension={rows} type={"column"} showError={showError}/>
             </sub>
-            }
         </h2>
     )
 }

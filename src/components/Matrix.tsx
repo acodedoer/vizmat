@@ -115,7 +115,7 @@ const MatrixDiv = styled('div')`
 `
 
 const MatrixElementInputTextField = styled(TextField)({
-    '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled': {
+    '& .MuiOutlinedInput-input.Mui-disabled': {
         fontWeight:600, 
         cursor:"pointer",
         "-webkit-text-fill-color":"#001e3c"
