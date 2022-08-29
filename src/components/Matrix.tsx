@@ -1,5 +1,6 @@
 import {TextField, styled} from '@mui/material';
 import "../App.css";
+import { colors } from '../constants';
 import ErrorMessage from './ErrorMessage';
 import MatrixDimensions from './MatrixDimension';
 
@@ -12,7 +13,12 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
         <>
             <MatrixDimensions name={name} rows={matrix.length} columns = {matrix[0].length} modifyMatrix ={modifyMatrix} showError={showError}/>
             <table className='matrix'>
+                <tbody>
+                    <tr><td>
                 <ErrorMessage operation={operation} m1={m1} m2={m2}/>
+                </td>
+                </tr>
+                </tbody>
             </table>
         </>
         :
@@ -64,16 +70,16 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
                             backgroundColor: operation===3?(
                                                 name==="m1"?
                                                     (i===visualise.question.i? 
-                                                        "#E5446D":
+                                                        colors.m1:
                                                         "#e7ebf0"):
                                                 name==="m2"?
                                                     (j===visualise.question.j?
-                                                        "#FAC748":
+                                                        colors.m2:
                                                         "#e7ebf0"):
                                                 (i===visualise.question.i && j===visualise.question.j ? "#001e3c":"#e7ebf0")
                                             ):
                                                 (i===visualise.question.i && j === visualise.question.j)?
-                                                    name==="m1"?"#E5446D" :name==="m2"?"#FAC748":
+                                                    name==="m1"?colors.m1 :name==="m2"?colors.m2:
                                                     "#001e3c":
                                                     "#e7ebf0"
                                                 }

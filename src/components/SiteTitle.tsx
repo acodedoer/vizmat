@@ -22,16 +22,7 @@ const SiteTitle = ({title="vismat"}) => {
         <Box sx={{ width:"100%"}}>
             <AppBar position="static" enableColorOnDark color="primary">
             <Toolbar>
-                <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
-                >
-                <MenuIcon />
-                </IconButton>
-                <Typography variant="h4" component="div" sx={{ flexGrow: 1, fontFamily:"'Exo 2', sans-serif" }}>
+                <Typography variant="h4" component="div" sx={{ flexGrow: 1, textAlign:"center",fontFamily:"'Exo 2', sans-serif" }}>
                     vismat
                 </Typography>
             </Toolbar>

@@ -56,12 +56,9 @@ function App() {
   }
 
   //handle changes in the size of a matrix
-  const modifyMatrix = (name:string, rows:any, columns:any) => {
+  const modifyMatrix = (name:string, rows:number, columns:number) => {
     console.log(rows);
-    if(rows===undefined||rows===""||rows===null) rows = 1;
-    if(columns===undefined||columns===""||rows===null) columns = 1;
-    if(rows>6 || columns>6 || rows<1 || columns<1) return;
-    
+      
     //copy old matrix to modify from state
     const matrix:number[][] = getMatrixFromState(name);
 
@@ -79,7 +76,7 @@ function App() {
     if(rows>matrix.length){
       const row = [];
       for(let i = 0; i<matrix[0].length; i++){row.push(0)}
-      matrix.push(row);
+      for(let i = matrix.length; i<rows; i++)matrix.push(row);
     }
 
     //add 0 columns for each row
@@ -130,6 +127,7 @@ function App() {
   
   useEffect(() => {
     updateAnswer();
+    setVisualState(initialVisualStates);
   }, [state.operation, state.m1, state.m2]);
 
   //check if operation is valid given the current size of matrices A and B

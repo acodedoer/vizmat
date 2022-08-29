@@ -4,6 +4,7 @@ import SubtractIcon from '@mui/icons-material/Remove';
 import MultiplyIcon from '@mui/icons-material/Close';
 import ResetIcon from "@mui/icons-material/SettingsBackupRestore"
 import SwapIcon from "@mui/icons-material/SwapHoriz"
+import { colors } from "../constants";
 
 const OperationalIcons = ({operation, initialState, setState, swapMatrices, updateState}: any) => {
     return(
@@ -13,7 +14,22 @@ const OperationalIcons = ({operation, initialState, setState, swapMatrices, upda
                 onChange={(event, newValue) => {
                     updateState("operation",newValue+1)
                 }}
-                sx={{height:"80px", width:"100%"}}
+                sx={{
+                    height:"80px", width:"100%",  
+                    '& .MuiBottomNavigationAction-label':{
+                        fontSize:"14px",
+                    },
+                    '& .Mui-selected': {
+                        backgroundColor:colors.darkAccect,
+                      '& .MuiBottomNavigationAction-label': {
+                        fontSize: "16px",
+                        transition: 'none',
+                        fontWeight: 'bold',
+                        lineHeight: '20px',
+                      }
+                    }
+                  }}
+  
                 showLabels
             >
                 <BottomNavigationAction className="nav" label="Add" icon={<AddIcon/>}/>
