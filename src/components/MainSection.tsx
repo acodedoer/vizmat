@@ -21,6 +21,7 @@ export const CustomDiv = styled(Box)`
 
     @media (max-width: 700px) {
         min-width: 90%;
+        max-width: 90%;
         margin:32px 0 112px 0;
     }
 `

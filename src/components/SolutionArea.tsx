@@ -17,10 +17,11 @@ const SolutionArea  = ({solution,operation=0}:any):JSX.Element => {
     return(
         <SolutionPaper variant="outlined">
             <div style={{textAlign:"center"}}>
-                <p>{solution.formula.map((line:JSX.Element)=>line)}</p>
                 {solution.answer.length===0?
                 <p>Click on any element in Matrix C</p>:
+                <><p>{solution.formula.map((line:JSX.Element)=>line)}</p>
                 <p style={{fontWeight:"bold"}}>{solution.answer.map((line:JSX.Element)=>line)}</p>
+                </>
                 }
             </div>
       </SolutionPaper>
