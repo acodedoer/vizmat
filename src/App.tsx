@@ -4,7 +4,7 @@ import { matrixAddition, matrixSubtraction,matrixMultiplication} from "./utils";
 import Matrix from "./components/Matrix";
 import SiteTitle from "./components/SiteTitle";
 import "./App.css";
-import { BottomNavigation, BottomNavigationAction, Box, Card, Paper, styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import ArithmeticSign from "./components/ArithmeticSign";
 import MainSection from "./components/MainSection";
 import { MatrixArithmeticArea } from "./components/MatrixArithmetic";
@@ -20,7 +20,7 @@ import {colors} from './constants'
 function App() {
                  
   const initialState:State = {
-    m1:{matrix:[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], size:[4,4]}, 
+    m1:{matrix:[[1,1,1,1],[2,2,2,2],[3,3,3,3],[4,4,4,4]], size:[4,4]}, 
     m2:{matrix:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]], size:[4,4]}, 
     answer:{matrix:[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], size:[4,4]}, 
     solution:{answer:[], question:<span></span>, formula:[<p></p>]}, 
@@ -103,7 +103,7 @@ function App() {
   //handle changes in the elements of a matrix
   const updateMatrix = (value:string, i:number, j:number, name:keyof typeof state) => {
     const matrix:number[][] = getMatrixFromState(name);
-    matrix[i][j] = value===""?0:value==="-"?0:parseInt(value)===0?0:(parseInt(value)|| matrix[i][j]);
+    matrix[i][j] = value===""?0:value==="-"?0:parseInt(value)===0?0:Math.abs(parseInt(value))>99?matrix[i][j]:(parseInt(value));
     updateState(name,{matrix,size:[matrix.length,matrix[0].length]})
   }
 

@@ -4,6 +4,9 @@ const SolutionArea  = ({solution,operation=0,showError}:any):JSX.Element => {
 
     const SolutionPaper = styled(Paper)({
         backgroundColor: "#e7ebf0",
+        display:"flex",
+        flexDirection:"column",
+        justifyContent:"center",
         margin: "16px", 
         width: "720px",
         height: "120px",
