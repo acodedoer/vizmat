@@ -122,7 +122,10 @@ function App() {
       const matrix:number[][] = performOperation();
       setState({...state, answer:{matrix,size:[matrix.length, matrix[0].length]}, solution:initialState.solution});
     }
-    else setShowError(true);
+    else {
+      setShowError(true);
+      setVisualState(initialVisualStates)
+    }
   }
   
   useEffect(() => {
@@ -199,7 +202,7 @@ function App() {
             <ArithmeticSign sign={0}/>
             <Matrix mat={state.answer} m1={state.m1.matrix} m2={state.m2.matrix} visualise={visualState.selectedCell}  name={"answer"} operation={state.operation} showSolution={showSolution} modifyMatrix={modifyMatrix} updateMatrix={updateMatrix} showError={showError} style={{flexBasis: "40%", flexShrink:0}}/>
           </MatrixArithmeticArea>
-          <SolutionArea solution={state.solution} operation={state.operation}/>
+          <SolutionArea solution={state.solution} operation={state.operation} showError={showError}/>
           <OperationalIcons 
             operation={state.operation}
             initialState = {initialState}

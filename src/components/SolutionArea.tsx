@@ -1,6 +1,6 @@
 import { Paper, styled } from "@mui/material";
 import type { SolutionType } from "../types/types";
-const SolutionArea  = ({solution,operation=0}:any):JSX.Element => {
+const SolutionArea  = ({solution,operation=0,showError}:any):JSX.Element => {
 
     const SolutionPaper = styled(Paper)({
         backgroundColor: "#e7ebf0",
@@ -13,9 +13,9 @@ const SolutionArea  = ({solution,operation=0}:any):JSX.Element => {
             width:"90%"
         }
     })
-
+    
     return(
-        <SolutionPaper variant="outlined">
+        <SolutionPaper variant="outlined" style={{visibility:showError?"hidden":"visible"}}>
             <div style={{textAlign:"center", padding:"8px"}}>
                 {solution.answer.length===0?
                 <p style={{fontSize:"20px"}}>Click on any element in Matrix C</p>:
