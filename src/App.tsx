@@ -5,19 +5,14 @@ import Matrix from "./components/Matrix";
 import SiteTitle from "./components/SiteTitle";
 import "./App.css";
 import { BottomNavigation, BottomNavigationAction, Box, Card, Paper, styled } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import SubtractIcon from '@mui/icons-material/Remove';
-import MultiplyIcon from '@mui/icons-material/Close';
 import ArithmeticSign from "./components/ArithmeticSign";
-import ResetIcon from "@mui/icons-material/SettingsBackupRestore"
-import SwapIcon from "@mui/icons-material/SwapHoriz"
-import Divider from '@mui/material/Divider';
 import MainSection from "./components/MainSection";
 import { MatrixArithmeticArea } from "./components/MatrixArithmetic";
 import type {MatrixObject, SolutionType,State,VisualState} from "./types/types"
 import SolutionArea from "./components/SolutionArea";
 import OperationalIcons from "./components/OperationalIcons";
 import BackgroundAnimation from "./components/BackgroundAnimation";
+import {colors} from './constants'
 
 
 
@@ -158,11 +153,11 @@ function App() {
     setVisualState({selectedCell:{question:{i:m,j:n}, answer:{i:m,j:n}}});
     let solution = {answer:"", question:<span>C<sub>{m+1}{n+1}</sub></span>, formula:[<span>C<sub>{m+1}{n+1}</sub> = </span>]};
     if(state.operation === 1){
-      solution.formula.push(<span>A<sub>{m+1}{n+1}</sub> + B<sub>{m+1}{n+1}</sub></span>)
+      solution.formula.push(<span><SpanA>A<SubA>{m+1}{n+1}</SubA></SpanA> + <SpanB>B<SubB>{m+1}{n+1}</SubB></SpanB></span>)
       solution.answer=`${state.m1.matrix[m][n]} + ${state.m2.matrix[m][n]} = ${state.m1.matrix[m][n] + state.m2.matrix[m][n]}`;
     }
     else if (state.operation === 2){
-      solution.formula.push(<span>A<sub>{m+1}{n+1}</sub> - B<sub>{m+1}{n+1}</sub></span>)
+      solution.formula.push(<span><SpanA>A<SubA>{m+1}{n+1}</SubA></SpanA>  - <SpanB>B<SubB>{m+1}{n+1}</SubB></SpanB></span>)
       solution.answer=`${state.m1.matrix[m][n]} - ${state.m2.matrix[m][n]} = ${state.m1.matrix[m][n] - state.m2.matrix[m][n]}`; 
     }
     else if (state.operation === 3){
@@ -218,6 +213,18 @@ function App() {
   );
 }
 
+const SpanA = styled('span')`
+  color: ${colors.m1}
+`
+const SpanB = styled('span')`
+  color: ${colors.m2}
+`
+const SubA = styled('sub')`
+  color: ${colors.m1}
+`
+const SubB = styled('sub')`
+  color: ${colors.m2}
+`
 const AppContainer = styled(Box)`
   width: 100vw;
   min-width:1300px;

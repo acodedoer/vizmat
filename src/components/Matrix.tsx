@@ -64,15 +64,16 @@ const Matrix = ({mat, updateMatrix, name, visualise, operation, showSolution, mo
                             backgroundColor: operation===3?(
                                                 name==="m1"?
                                                     (i===visualise.question.i? 
-                                                        "#001e3c":
+                                                        "#E5446D":
                                                         "#e7ebf0"):
                                                 name==="m2"?
                                                     (j===visualise.question.j?
-                                                        "#001e3c":
+                                                        "#FAC748":
                                                         "#e7ebf0"):
                                                 (i===visualise.question.i && j===visualise.question.j ? "#001e3c":"#e7ebf0")
                                             ):
                                                 (i===visualise.question.i && j === visualise.question.j)?
+                                                    name==="m1"?"#E5446D" :name==="m2"?"#FAC748":
                                                     "#001e3c":
                                                     "#e7ebf0"
                                                 }
