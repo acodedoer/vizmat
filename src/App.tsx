@@ -14,9 +14,6 @@ import OperationalIcons from "./components/OperationalIcons";
 import BackgroundAnimation from "./components/BackgroundAnimation";
 import {colors} from './constants'
 
-
-
-
 function App() {
                  
   const initialState:State = {
